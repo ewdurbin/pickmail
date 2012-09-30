@@ -10,12 +10,14 @@ class Config:
         self.port = None
         self.username = None
         self.password = None
+        self.mailbox = "INBOX"
 
     def _build_config(self):
         config = ConfigParser.SafeConfigParser()
         config.add_section('pickmail')
         config.set('pickmail', 'server', '')
         config.set('pickmail', 'port', '')
+        config.set('pickmail', 'mailbox', '')
         config.set('pickmail', 'username', '')
         config.set('pickmail', 'password', '')
         return config
@@ -25,6 +27,7 @@ class Config:
             self.config.read(config_file)
             self.server = self.config.get('pickmail', 'server')
             self.port = self.config.get('pickmail', 'port')
+            self.mailbox = self.config.get('pickmail', 'mailbox')
             self.username = self.config.get('pickmail', 'username')
             self.password = self.config.get('pickmail', 'password')
 
@@ -41,6 +44,9 @@ class Config:
        if not self.port:
            prompt = "IMAP Server port?:\n"
            self.port = str(raw_input(prompt))
+       if not self.mailbox:
+           prompt = "IMAP Mailbox name?:\n"
+           self.mailbox = str(raw_input(prompt))
        if not self.username:
            prompt = "IMAP Username for %s:%s ?:\n" % (self.server, self.port)
            self.username = str(raw_input(prompt))
@@ -58,6 +64,7 @@ class Config:
     def write_config(self, store_pass=False):
         self.config.set('pickmail', 'server', self.server)
         self.config.set('pickmail', 'port', self.port)
+        self.config.set('pickmail', 'mailbox', self.mailbox)
         self.config.set('pickmail', 'username', self.username)
         self.config.set('pickmail', 'password', self.password)
         if not store_pass:

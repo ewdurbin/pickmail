@@ -1,39 +1,22 @@
 #!/usr/bin/env python
 
-import imaplib
-import email
-
 import pickmail
+import pprint
 
 PERSIST=False
 
 config = pickmail.Config()
 config.setup_config(persist=PERSIST)
 
-mail = imaplib.IMAP4_SSL(config.server, config.port)
-mail.login(config.username, config.password)
-mail.select("INBOX", readonly=True)
+connection = pickmail.Connection(config)
+data = connection.dict_of_messages()
 
-result, data = mail.uid('search', None, "ALL")
-mail_list = data[0].split()
-latest = mail_list[-10:]
-
-result, data = mail.uid('fetch', ",".join(latest), '(BODY[HEADER])')
-
-i = 0
-for msg in data:
-    if msg != ')':
-      email_msg = email.message_from_string(msg[1])
-      print "%s:   %5s\n\t%s" % (i, email_msg['From'], email_msg['Subject'])
-      i = i+1
+for k, v in data.items():
+    print v['info']
 
 msg = input('Please select a message:\n')
 if msg != '':
-    result, data = mail.uid('fetch', latest[msg], '(RFC822)')
-    raw_email = data[0][1]
+    uid = data[msg]['uid']
     file = open('pickmail.out', 'w')
-    file.write(raw_email)
+    file.write(connection.fetch_message(uid))
     file.close()
-
-mail.close()
-mail.logout()

@@ -4,15 +4,27 @@ import imaplib
 import getpass
 import email
 
-server = "imap.gmail.com"
-port = "993"
-username = "ewdurbin@gmail.com"
+server = None 
+port = None
+username = None 
 password = None
 
+if not server:
+  prompt = "IMAP Server hostname?:\n"
+  server = str(raw_input(prompt))
+if not port:
+  prompt = "IMAP Server port?:\n"
+  port = str(raw_input(prompt))
+
 mail = imaplib.IMAP4_SSL(server, port)
+
+if not username:
+  prompt = "IMAP Username for %s:%s ?:\n" % (server, port)
+  username = str(raw_input(prompt))
 if not password:
-  prompt = "IMAP Password for %s?:\n" % (username)
+  prompt = "IMAP Password for %s ?:\n" % (username)
   password = getpass.getpass(prompt)
+
 mail.login(username, password)
 mail.select("INBOX", readonly=True)
 

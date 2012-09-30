@@ -1,31 +1,17 @@
 #!/usr/bin/env python
 
 import imaplib
-import getpass
 import email
 
-server = None 
-port = None
-username = None 
-password = None
+import pickmail
 
-if not server:
-  prompt = "IMAP Server hostname?:\n"
-  server = str(raw_input(prompt))
-if not port:
-  prompt = "IMAP Server port?:\n"
-  port = str(raw_input(prompt))
+PERSIST=False
 
-mail = imaplib.IMAP4_SSL(server, port)
+config = pickmail.Config()
+config.setup_config(persist=PERSIST)
 
-if not username:
-  prompt = "IMAP Username for %s:%s ?:\n" % (server, port)
-  username = str(raw_input(prompt))
-if not password:
-  prompt = "IMAP Password for %s ?:\n" % (username)
-  password = getpass.getpass(prompt)
-
-mail.login(username, password)
+mail = imaplib.IMAP4_SSL(config.server, config.port)
+mail.login(config.username, config.password)
 mail.select("INBOX", readonly=True)
 
 result, data = mail.uid('search', None, "ALL")

@@ -9,8 +9,8 @@ class Connection:
         self.mailserver.login(config.username, config.password)
         self.mailserver.select(config.mailbox, readonly=True)
 
-    def get_message_list(self, count=10, offset=0):
-        result, data = self.mailserver.uid('search', None, "ALL")
+    def get_message_list(self, count=10, offset=0, search_str="ALL"):
+        result, data = self.mailserver.uid('search', None, search_str) 
         mail_list = data[0].split()
         start = -(count + offset + 1)
         end = -(offset + 1)
@@ -23,8 +23,8 @@ class Connection:
         result, data = self.mailserver.uid('fetch', query_str, '(BODY[HEADER])') 
         return data
 
-    def dict_of_messages(self, count=10, offset=0):
-        message_list = self.get_message_list(count, offset)
+    def dict_of_messages(self, count=10, offset=0, search_str="ALL"):
+        message_list = self.get_message_list(count, offset, search_str)
         rev_message_list = message_list[::-1] 
         data = self.get_message_headers(message_list)
         message_map = {}

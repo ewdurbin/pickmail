@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='pickmail',
-    version='0.9',
+    version='0.91',
     author='Ernest W. Durbin III',
     packages=['pickmail'],
     scripts=['bin/pickmail'],

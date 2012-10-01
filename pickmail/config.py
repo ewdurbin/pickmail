@@ -71,10 +71,10 @@ class Config:
     def write_config(self, store_pass=False):
         self.config.set('pickmail', 'server', self.server)
         self.config.set('pickmail', 'port', self.port)
-        self.config.set('pickmail', 'mailbox', self.mailbox)
         self.config.set('pickmail', 'username', self.username)
+        self.config.set('pickmail', 'mailbox', self.mailbox)
         self.config.set('pickmail', 'password', self.password)
-        self.config.set('pickmail', 'batchsize', self.batchsize)
+        self.config.set('pickmail', 'batchsize', str(self.batchsize))
         if not store_pass:
             self.config.remove_option('pickmail', 'password')
         with open(self.config_file, 'wb') as file:

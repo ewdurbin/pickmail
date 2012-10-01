@@ -6,10 +6,10 @@ class Parser:
     def __init__(self):
         self.parser = optparse.OptionParser()
         self.parser.add_option('-s', '--server', dest='server', default=None, help='imap server')
-        self.parser.add_option('-p', '--port', dest='port', default=None, help='imap port')
+        self.parser.add_option('-p', '--port', type="int", dest='port', default=None, help='imap port')
         self.parser.add_option('-u', '--user', dest='user', default=None, help='imap username')
         self.parser.add_option('-m', '--mailbox', dest='mailbox', default="INBOX", help='mailbox to query')
-        self.parser.add_option('-b', '--batch-size', dest='batchsize', default=10, help='messages per batch')
+        self.parser.add_option('-b', '--batch-size', type="int", dest='batchsize', default=10, help='messages per batch')
         self.parser.add_option('-c', '--config', dest='config', default=None, help='configuration file')
         self.parser.add_option('--setup', action="store_true", dest='setup', help='setup ~/.pickmailrc configuration file')
         self.parser.add_option('-w', '--wat', action="store_true", dest='password', help='save password in configuration file')

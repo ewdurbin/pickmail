@@ -6,8 +6,11 @@ class Connection:
 
     def __init__(self, config):
         self.mailserver = imaplib.IMAP4_SSL(config.server, config.port)
+        if not config.password:
+            config.setup_config()
         self.mailserver.login(config.username, config.password)
         self.mailserver.select(config.mailbox, readonly=True)
+        self.data = None
 
     def get_message_list(self, count=10, offset=0, search_str="ALL"):
         result, data = self.mailserver.uid('search', None, search_str) 
@@ -32,11 +35,17 @@ class Connection:
         for msg in reversed(data):
             if msg != ')':
                 email_msg = email.message_from_string(msg[1])
-                info = "%s:   %5s\n\t%s" % (i, email_msg['From'], email_msg['Subject'])
+                info = "\n%s:   %5s\n\t%s" % (i, email_msg['From'], email_msg['Subject'])
                 message_map[i] = {'uid': rev_message_list[i], 'info': info}
                 i = i + 1 
         return message_map
         
+    def get_messages(self, offset=0):
+        self.data = self.dict_of_messages(offset=offset)
+        ret = ""
+        for k, v in self.data.items():
+            ret += v['info']
+        return ret
 
     def fetch_message(self, uid):
         result, data = self.mailserver.uid('fetch', uid, '(RFC822)')

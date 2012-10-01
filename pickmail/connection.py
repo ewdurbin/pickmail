@@ -40,8 +40,8 @@ class Connection:
                 i = i + 1 
         return message_map
         
-    def get_messages(self, offset=0):
-        self.data = self.dict_of_messages(offset=offset)
+    def get_messages(self, count=10, offset=0):
+        self.data = self.dict_of_messages(count=count, offset=offset)
         ret = ""
         for k, v in self.data.items():
             ret += v['info']

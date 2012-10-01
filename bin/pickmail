@@ -6,21 +6,19 @@ import pprint
 config = pickmail.Config()
 
 parser = pickmail.Parser()
-parser.parse_cli()
-
-print parser.options
-print parser.args
+config = parser.parse_cli(config)
 
 connection = pickmail.Connection(config)
 
+count = int(config.batchsize)
 offset = 0
 selected = -1
 while selected < 0:
-    print connection.get_messages(offset) 
+    print connection.get_messages(count=count, offset=offset) 
     msg = raw_input('Please select a message, or press return for more:\n')
     if msg == '':
-        offset = offset + 10
-        print connection.get_messages(offset=offset)
+        offset = offset + config.batchsize 
+        print connection.get_messages(count=count, offset=offset)
     else:
         selected = msg
 

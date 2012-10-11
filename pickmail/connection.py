@@ -5,9 +5,9 @@ import email
 class Connection:
 
     def __init__(self, config):
-        self.mailserver = imaplib.IMAP4_SSL(config.server, config.port)
         if not config.password:
             config.setup_config()
+        self.mailserver = imaplib.IMAP4_SSL(config.server, int(config.port))
         self.mailserver.login(config.username, config.password)
         self.mailserver.select(config.mailbox, readonly=True)
         self.data = None

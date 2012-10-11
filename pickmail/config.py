@@ -48,11 +48,21 @@ class Config:
 
     def setup_config(self, persist=False, store_pass=False):
        if not self.server:
-           prompt = "IMAP Server hostname?:\n"
-           self.server = str(raw_input(prompt))
+           default = 'imap.gmail.com'
+           prompt = "IMAP Server hostname? (%s):\n" % (default)
+           user_in = raw_input(prompt)
+           if not user_in:
+               self.server = default 
+           else:
+               self.server = user_in 
        if not self.port:
-           prompt = "IMAP Server port?:\n"
-           self.port = str(raw_input(prompt))
+           default = 993
+           prompt = "IMAP Server port? (%s):\n" % (default)
+           user_in = raw_input(prompt)
+           if not user_in:
+               self.port = default 
+           else:
+               self.port = user_in 
        if not self.mailbox:
            prompt = "IMAP Mailbox name?:\n"
            self.mailbox = str(raw_input(prompt))

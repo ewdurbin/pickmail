@@ -17,7 +17,6 @@ while selected < 0:
     msg = raw_input('Please select a message, or press return for more:\n')
     if msg == '':
         offset = offset + config.batchsize 
-        print connection.get_messages(count=count, offset=offset)
     else:
         selected = msg
 

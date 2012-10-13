@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import pickmail
+import sys
 
 config = pickmail.Config()
 
@@ -14,9 +15,11 @@ offset = 0
 selected = -1
 while selected < 0:
     print connection.get_messages(count=count, offset=offset) 
-    msg = raw_input('Please select a message, or press return for more:\n')
+    msg = raw_input('Please select a message, or press return for more. q/Q to exit:\n')
     if msg == '':
         offset = offset + config.batchsize 
+    elif "".join(msg.split()) == 'q' or "".join(msg.split()) == 'Q':
+        sys.exit()
     else:
         selected = msg
 

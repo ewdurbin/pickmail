@@ -3,7 +3,7 @@ import imaplib
 import email
 from email.header import decode_header
 
-def get_decoded_name(string_list):
+def get_decoded_string(string_list):
     decoded = []
     for string in string_list:
         if string[1]:
@@ -36,7 +36,6 @@ class Connection:
         result, data = self.mailserver.uid('fetch', query_str, '(BODY[HEADER])') 
         return data
 
-
     def dict_of_messages(self, count=10, offset=0, search_str="ALL"):
         message_list = self.get_message_list(count, offset, search_str)
         rev_message_list = message_list[::-1] 
@@ -46,7 +45,11 @@ class Connection:
         for msg in reversed(data):
             if msg != ')':
                 email_msg = email.message_from_string(msg[1])
-                info = "\n%s:   %5s\n\t%s" % (i, get_decoded_name(decode_header(email_msg['From'])), email_msg['Subject'])
+                from_str = get_decoded_string(decode_header(email_msg['From']))
+                subj_str = get_decoded_string(decode_header(email_msg['Subject']))
+                if subj_str == "":
+                    subj_str = "(No Subject)"
+                info = "\n%s:   %5s\n\t%s" % (i, from_str, subj_str) 
                 message_map[i] = {'uid': rev_message_list[i], 'info': info}
                 i = i + 1 
         return message_map

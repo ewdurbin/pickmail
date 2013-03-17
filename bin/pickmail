@@ -26,6 +26,10 @@ while selected < 0:
 if selected != '':
     data = connection.data
     uid = data[int(selected)]['uid']
-    file = open('pickmail.out', 'w')
-    file.write(connection.fetch_message(uid))
-    file.close()
+    payload = connection.fetch_message(uid)
+    if config.dest_file:
+        file = open(config.dest_file, 'w')
+        file.write(payload)
+        file.close()
+    else:
+        sys.stdout.write(payload)

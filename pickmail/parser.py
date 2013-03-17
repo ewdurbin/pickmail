@@ -11,6 +11,7 @@ class Parser:
         self.parser.add_option('-m', '--mailbox', dest='mailbox', default="INBOX", help='mailbox to query')
         self.parser.add_option('-b', '--batch-size', type="int", dest='batchsize', default=10, help='messages per batch')
         self.parser.add_option('-c', '--config', dest='config', default=None, help='configuration file')
+        self.parser.add_option('-o', '--output', dest='dest_file', default=None, help='output file (stdout if not set)')
         self.parser.add_option('--setup', action="store_true", dest='setup', help='setup ~/.pickmailrc configuration file')
         self.parser.add_option('-w', '--wat', action="store_true", dest='password', help='save password in configuration file')
         self.options = None
@@ -18,6 +19,7 @@ class Parser:
 
     def parse_cli(self, configuration):
         self.options, self.args = self.parser.parse_args()
+        configuration.dest_file = None
         if self.options.config:
             configuration = pickmail.Config(config_file=self.options.config)
         if self.options.setup:
@@ -32,4 +34,6 @@ class Parser:
             configuration.batchsize = self.options.batchsize
         if self.options.mailbox:
             configuration.mailbox = self.options.mailbox
+        if self.options.dest_file:
+            configuration.dest_file= self.options.dest_file
         return configuration

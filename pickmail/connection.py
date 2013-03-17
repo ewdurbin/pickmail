@@ -49,7 +49,7 @@ class Connection:
                 subj_str = get_decoded_string(decode_header(email_msg['Subject']))
                 if subj_str == "":
                     subj_str = "(No Subject)"
-                info = "\n%s:   %5s\n\t%s" % (i, from_str, subj_str) 
+                info = "%s:   %5s\n\t%s\n" % (i, from_str, subj_str) 
                 message_map[i] = {'uid': rev_message_list[i], 'info': info}
                 i = i + 1 
         return message_map

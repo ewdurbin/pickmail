@@ -14,7 +14,7 @@ count = int(config.batchsize)
 offset = 0
 selected = -1
 while selected < 0:
-    print connection.get_messages(count=count, offset=offset) 
+    sys.stderr.write(connection.get_messages(count=count, offset=offset))
     msg = raw_input('Please select a message, or press return for more. q/Q to exit:\n')
     if msg == '':
         offset = offset + config.batchsize 
